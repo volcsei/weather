@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Entities\City;
 use App\Models\CityModel;
+use App\Models\WeatherModel;
 use Exception;
 
 class Home extends BaseController
@@ -85,6 +86,28 @@ class Home extends BaseController
 
             $cityModel = new CityModel();
             $data = $cityModel->findAll();
+
+            $response = ['type' => 'success', 'data' => $data];
+        } catch (Exception $e){
+            log_message('error', $e->getMessage());
+            $response = ['type' => 'error', 'body' => $e->getMessage()];
+        }
+
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
+        exit();
+    }
+
+    public function getCityWeatherHourly(){
+        try{
+            /*if (!$this->request->isAJAX()) {
+                throw new Exception('Az oldal ajax kéréssel érhető el.');
+            }*/
+
+            $id = $this->request->getVar('id', FILTER_SANITIZE_NUMBER_INT);
+            //$id = 3;
+
+            $weatherModel = new WeatherModel();
+            $data = $weatherModel->getHourlyWeatherByCityID($id);
 
             $response = ['type' => 'success', 'data' => $data];
         } catch (Exception $e){

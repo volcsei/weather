@@ -13,6 +13,7 @@ class Cronjobs extends BaseController
     const api_key = '5fc76e4e480f83af65d8a53832008827';
     const units = 'metric';
 
+    // Cronjob futtatása óránként
     public function getCitiesWeatherData(){
         try{
             $cityModel = new CityModel();
